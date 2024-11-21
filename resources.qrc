@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Sprites</file>
+        <file>Sprites/tilebase.png</file>
+        <file>Sprites/tileeight.png</file>
+        <file>Sprites/tilefive.png</file>
+        <file>Sprites/tilefour.png</file>
+        <file>Sprites/tilenine.png</file>
+        <file>Sprites/tileone.png</file>
+        <file>Sprites/tileseven.png</file>
+        <file>Sprites/tilesix.png</file>
+        <file>Sprites/tilethree.png</file>
+        <file>Sprites/tiletwo.png</file>
+    </qresource>
+</RCC>

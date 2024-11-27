@@ -4,14 +4,21 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
 
-class Tile
-{
+class Tile: public QGraphicsPixmapItem {
 public:
-    Tile();
-    QPixmap tileImage = QPixmap(":/Sprites/tilebase.png");
-private:
-    int status = 0;
+    Tile(const QPixmap &pixmap) : QGraphicsPixmapItem(pixmap) {}
+    QPixmap image = QPixmap(":/Sprites/tilebase.png");
 
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override {
+        if (event->button() == Qt::LeftButton) {
+            qDebug() << "Left button clicked on item!";
+        } else if (event->button() == Qt::RightButton) {
+            qDebug() << "Right button clicked on item!";
+        }
+        QGraphicsPixmapItem::mousePressEvent(event);
+    }
 };
+
 
 #endif // TILE_H

@@ -9,15 +9,13 @@ LogicHandler::LogicHandler()
 }
 
 void LogicHandler::BuildScene(QGraphicsScene* scene, int width, int height){
-        // Добавляем изображения в виде сетки
     for (int row = 0; row < width; ++row) {
         for (int col = 0; col < height; ++col) {
-            Tile* tileobj = new Tile();
-            QGraphicsPixmapItem* item = new QGraphicsPixmapItem(tileobj->tileImage);
-            item->setPos(col * (tileobj->tileImage.width()), row * (tileobj->tileImage.height()));
+           // Tile* tileobj = new Tile(QPixmap(":/Sprites/tilebase.png"));
+            QGraphicsPixmapItem* item = new Tile(QPixmap(":/Sprites/tilebase.png"));
+            item->setPos(col * 50, row * 50);
             scene->addItem(item);
-            delete tileobj;
-           //qDebug() << QFile("://Sprites/tilebase.png").exists();
+            //delete tileobj;
         }
     }
 }

@@ -5,11 +5,11 @@
         <file>Sprites/tileeight.png</file>
         <file>Sprites/tilefive.png</file>
         <file>Sprites/tilefour.png</file>
-        <file>Sprites/tilenine.png</file>
         <file>Sprites/tileone.png</file>
         <file>Sprites/tileseven.png</file>
         <file>Sprites/tilesix.png</file>
         <file>Sprites/tilethree.png</file>
         <file>Sprites/tiletwo.png</file>
+        <file>Sprites/tileused.png</file>
     </qresource>
 </RCC>

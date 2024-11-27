@@ -9,7 +9,7 @@ public:
     Tile(const QPixmap &pixmap) : QGraphicsPixmapItem(pixmap) {}
    public:
     QPixmap GetImage();
-    void SetImage();
+    void SetImage(QPixmap pixmap);
 private:
     QPixmap image = QPixmap(":/Sprites/tilebase.png");
 
@@ -18,9 +18,10 @@ protected:
         if (event->button() == Qt::LeftButton) {
             qDebug() << "Left button clicked on item!";
            // setPixmap(QPixmap(":/Sprites/tileused.png"));
-            SetImage();
+            SetImage(QPixmap(":/Sprites/tileused.png"));
         } else if (event->button() == Qt::RightButton) {
             qDebug() << "Right button clicked on item!";
+            SetImage(QPixmap(":/Sprites/tileflag.png"));
         }
         QGraphicsPixmapItem::mousePressEvent(event);
     }

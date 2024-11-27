@@ -4,6 +4,6 @@ QPixmap Tile::GetImage(){
     return image;
 }
 
-void Tile::SetImage(){
-    this->setPixmap(QPixmap(":/Sprites/tileused.png"));
+void Tile::SetImage(QPixmap pixmap){
+    this->setPixmap(pixmap);
 }

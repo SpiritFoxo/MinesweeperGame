@@ -11,5 +11,7 @@
         <file>Sprites/tilethree.png</file>
         <file>Sprites/tiletwo.png</file>
         <file>Sprites/tileused.png</file>
+        <file>Sprites/landmine.png</file>
+        <file>Sprites/tileflag.png</file>
     </qresource>
 </RCC>

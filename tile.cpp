@@ -5,5 +5,6 @@ QPixmap Tile::GetImage(){
 }
 
 void Tile::SetImage(QPixmap pixmap){
-    this->setPixmap(pixmap);
+    //this->setPixmap(pixmap);
+    this->image = pixmap;
 }

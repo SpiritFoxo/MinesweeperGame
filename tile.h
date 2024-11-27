@@ -18,10 +18,10 @@ protected:
         if (event->button() == Qt::LeftButton) {
             qDebug() << "Left button clicked on item!";
            // setPixmap(QPixmap(":/Sprites/tileused.png"));
-            SetImage(QPixmap(":/Sprites/tileused.png"));
+            setPixmap(image);
         } else if (event->button() == Qt::RightButton) {
             qDebug() << "Right button clicked on item!";
-            SetImage(QPixmap(":/Sprites/tileflag.png"));
+            setPixmap(QPixmap(":/Sprites/tileflag.png"));
         }
         QGraphicsPixmapItem::mousePressEvent(event);
     }

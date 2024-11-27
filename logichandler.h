@@ -13,10 +13,11 @@ public:
 
 
 private:
-    QList<Tile*> tiles;
+    QVector<QVector<Tile*>> tiles;
     QVector<QVector<int>> map;
 
     void GenerateMap(int n, int rows, int cols);
+    void UpdateTiles(int width, int height);
 };
 
 #endif // LOGICHANDLER_H

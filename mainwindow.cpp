@@ -32,7 +32,6 @@ void MainWindow::on_mediumButton_clicked()
     ui->graphicsView->setScene(scene);
     LogicHandler* lh = new LogicHandler();
     lh->BuildScene(ui->graphicsView->scene(), 18,18);
-    delete lh;
 }
 
 
@@ -42,7 +41,6 @@ void MainWindow::on_hardButton_clicked()
     ui->graphicsView->setScene(scene);
     LogicHandler* lh = new LogicHandler();
     lh->BuildScene(ui->graphicsView->scene(), 36,36);
-    delete lh;
 
 }
 

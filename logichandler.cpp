@@ -4,21 +4,26 @@
 
 LogicHandler::LogicHandler()
 {
-
+    gameTimer = new QTimer(this);
+    connect(gameTimer, &QTimer::timeout, this, &LogicHandler::updateTimer);
 }
 
+//main method to build scene
 void LogicHandler::BuildScene(QGraphicsScene* scene, int width, int height){
+    elapsedSeconds = 0;
+    gameTimer->start(1000);
     this->rows = width;
     this->cols = height;
-    this->scene = scene;
     for (int row = 0; row < width; ++row) {
+        //some useless vectors to fill main arrays
         QVector<Tile*> tempVector;
         QVector<int> tempVector2;
         for (int col = 0; col < height; ++col) {
+            //generating tile objects and setting them up
             Tile *tile = new Tile(QPixmap(":/Sprites/tilebase.png"), row, col);
             tile->setParent(this);
             tile->setPos(col * 50, row * 50);
-            this->scene->addItem(tile);
+            scene->addItem(tile);
             tempVector.push_back(tile);
             tempVector2.push_back(0);
         }
@@ -27,13 +32,15 @@ void LogicHandler::BuildScene(QGraphicsScene* scene, int width, int height){
     }
 
     this->landminesCount = width*height/8;
-    qDebug() << QString::number(landminesCount);
-    GenerateMap(this->landminesCount, width, height);
-    UpdateTiles(width, height);
+   // qDebug() << QString::number(landminesCount);
+    GenerateMap(this->landminesCount, width, height); //generating landmines positions
+    UpdateTiles(width, height); //updating reveal image of each tile
 }
 
 void LogicHandler::GenerateMap(int n, int rows, int cols){
-    std::srand(std::time(0));
+
+    //generating random positions of landmines
+       std::srand(std::time(0));
        int totalCells = rows * cols;
 
        std::vector<int> positions(totalCells, 0);
@@ -49,6 +56,7 @@ void LogicHandler::GenerateMap(int n, int rows, int cols){
            }
        }
 
+    //filling each tile on map with number of landmines around
        std::vector<int> directions = {-1, 0, 1};
        for (int i = 0; i < rows; ++i) {
            for (int j = 0; j < cols; ++j) {
@@ -68,6 +76,12 @@ void LogicHandler::GenerateMap(int n, int rows, int cols){
        }
 }
 
+void LogicHandler::updateTimer() {
+    elapsedSeconds++;
+    emit timeUpdated(elapsedSeconds);
+}
+
+//method for recursively open near tiles if blank one was clicked
 void LogicHandler::RevealCloseTiles(int row, int col)
 {
     for (int dr = -1; dr <= 1; ++dr) {
@@ -94,8 +108,13 @@ void LogicHandler::RevealCloseTiles(int row, int col)
             }
         }
 }
+
+//if game is lost showing all landmines positions and locks clicks on tiles
 void LogicHandler::GameLost(){
-     QMessageBox::information(nullptr, "Negative victory", "Congratulations! You blow up!");
+     gameTimer->stop();
+    // qDebug() << elapsedSeconds;
+     float score = int((correctFlags * (float(1)/float(elapsedSeconds)) * (float(1)/float(elapsedSeconds*elapsedSeconds)) * float(elapsedSeconds) + 1.5) * 4000 - 6000);
+     QMessageBox::information(nullptr, "Negative victory", "Congratulations! You blow up!\nYour score is " + QString::number(score));
      isGameActive = false;
      for (int i = 0; i < rows; ++i) {
          for (int j = 0; j < cols; ++j) {
@@ -106,25 +125,32 @@ void LogicHandler::GameLost(){
      }
 }
 
+//same as previous but more positive
 void LogicHandler::GameWon(){
-    QMessageBox::information(nullptr, "Victory", "Congratulations! You won!");
+    gameTimer->stop();
+    float score = int((correctFlags * (float(1)/float(elapsedSeconds)) * (float(1)/float(elapsedSeconds*elapsedSeconds)) * float(elapsedSeconds) + 1.5) * 4000 - 6000);
+    QMessageBox::information(nullptr, "Victory", "Congratulations! You won!\nYour score is " + QString::number(score));
     isGameActive = false;
 }
 
+//Kludge to make flags work
 void LogicHandler::FlagHandlerLogic(int type, int row, int col){
-    if(type == 0){ totalFlags++; }
-    else if(type == 1){ totalFlags++; correctFlags++; }
-    else if(type == 2){ totalFlags--; }
-    else if (type == 3) { totalFlags--; correctFlags--; }
+    if(type == 0){ totalFlags++; } //if user put flag on wrong tile
+    else if(type == 1){ totalFlags++; correctFlags++; } //if user put flag on landmine
+    else if(type == 2){ totalFlags--; } //if user removed flag from wrong tile
+    else if (type == 3) { totalFlags--; correctFlags--; } //if user removed flag from landmine (its not even possible but why not)
     if(totalFlags > landminesCount){
+        //if user tries to put more flags than mines in the game then this flag just deleting itself
         tiles[row][col]->RemoveFlagImage();
         totalFlags--;
     }
-    if(correctFlags == landminesCount){ GameWon(); }
-    qDebug() <<"Всего флагов " + QString::number(totalFlags);
-    qDebug() <<"Всего правильных флагов " +QString::number(correctFlags);
+    if(correctFlags == landminesCount){ GameWon(); }//if number of correctly placed flags equals amount of landmines it counts as win
+   // qDebug() <<"Всего флагов " + QString::number(totalFlags);
+   // qDebug() <<"Всего правильных флагов " +QString::number(correctFlags);
 }
 
+
+//updating tiles info and connecting signals
 void LogicHandler::UpdateTiles(int width, int height){
     for (int row = 0; row < width; ++row) {
         for (int col = 0; col < height; ++col) {

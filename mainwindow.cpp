@@ -6,6 +6,12 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    QPalette palette;
+    palette.setBrush(QPalette::Background, QBrush(QPixmap(":/Sprites/coolbackground.jpg")));
+    this->setPalette(palette);
+
+    this->setAutoFillBackground(true);
+
     ui->setupUi(this);
 
 }

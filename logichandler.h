@@ -2,6 +2,8 @@
 #define LOGICHANDLER_H
 #include <cstdlib>
 #include <ctime>
+#include "math.h"
+#include <QTimer>
 #include <QGraphicsScene>
 #include "tile.h"
 #include "QMessageBox"
@@ -18,7 +20,8 @@ public:
 private:
     QVector<QVector<Tile*>> tiles;
     QVector<QVector<int>> map;
-    QGraphicsScene* scene;
+    QTimer *gameTimer;
+    int elapsedSeconds;
     int rows;
     int cols;
     int landminesCount;
@@ -33,8 +36,12 @@ private:
     void RevealCloseTiles(int row, int col);
     void FlagHandlerLogic(int type, int row, int col);
 
+private slots:
+    void updateTimer();
+
 signals:
     void gameEnded(bool won);
+    void timeUpdated(int seconds);
 };
 
 #endif // LOGICHANDLER_H

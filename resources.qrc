@@ -13,5 +13,7 @@
         <file>Sprites/tileused.png</file>
         <file>Sprites/landmine.png</file>
         <file>Sprites/tileflag.png</file>
+        <file>Sprites/icon.ico</file>
+        <file>Sprites/coolbackground.jpg</file>
     </qresource>
 </RCC>

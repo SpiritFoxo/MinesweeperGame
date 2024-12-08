@@ -10,13 +10,15 @@ LogicHandler::LogicHandler()
 void LogicHandler::BuildScene(QGraphicsScene* scene, int width, int height){
     this->rows = width;
     this->cols = height;
+    this->scene = scene;
     for (int row = 0; row < width; ++row) {
         QVector<Tile*> tempVector;
         QVector<int> tempVector2;
         for (int col = 0; col < height; ++col) {
             Tile *tile = new Tile(QPixmap(":/Sprites/tilebase.png"), row, col);
+            tile->setParent(this);
             tile->setPos(col * 50, row * 50);
-            scene->addItem(tile);
+            this->scene->addItem(tile);
             tempVector.push_back(tile);
             tempVector2.push_back(0);
         }
@@ -92,8 +94,21 @@ void LogicHandler::RevealCloseTiles(int row, int col)
             }
         }
 }
-void LogicHandler::gameLost(){
+void LogicHandler::GameLost(){
      QMessageBox::information(nullptr, "Negative victory", "Congratulations! You blow up!");
+     isGameActive = false;
+     for (int i = 0; i < rows; ++i) {
+         for (int j = 0; j < cols; ++j) {
+             if(tiles[i][j]->isLandmine){
+                tiles[i][j]->RevealTile();
+             }
+         }
+     }
+}
+
+void LogicHandler::GameWon(){
+    QMessageBox::information(nullptr, "Victory", "Congratulations! You won!");
+    isGameActive = false;
 }
 
 void LogicHandler::FlagHandlerLogic(int type, int row, int col){
@@ -105,7 +120,7 @@ void LogicHandler::FlagHandlerLogic(int type, int row, int col){
         tiles[row][col]->RemoveFlagImage();
         totalFlags--;
     }
-    if(correctFlags == landminesCount){ QMessageBox::information(nullptr, "Victory", "Congratulations! You won!");}
+    if(correctFlags == landminesCount){ GameWon(); }
     qDebug() <<"Всего флагов " + QString::number(totalFlags);
     qDebug() <<"Всего правильных флагов " +QString::number(correctFlags);
 }
@@ -153,7 +168,7 @@ void LogicHandler::UpdateTiles(int width, int height){
                 break;
             case 10:
                 tiles[row][col]->SetImage(QPixmap(":/Sprites/landmine.png"), true, false);
-                connect(tiles[row][col], &Tile::mineClicked, this, &LogicHandler::gameLost);
+                connect(tiles[row][col], &Tile::mineClicked, this, &LogicHandler::GameLost);
                 connect(tiles[row][col], &Tile::flagPlaced, this, &LogicHandler::FlagHandlerLogic);
                 break;
             }

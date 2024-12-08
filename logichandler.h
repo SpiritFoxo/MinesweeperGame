@@ -8,23 +8,25 @@
 
 class LogicHandler : public QObject
 {
+    Q_OBJECT
 public:
     LogicHandler();
     void BuildScene(QGraphicsScene* scene, int width, int height);
+    bool isGameActive = true;
 
 
 private:
     QVector<QVector<Tile*>> tiles;
     QVector<QVector<int>> map;
+    QGraphicsScene* scene;
     int rows;
     int cols;
     int landminesCount;
     int correctFlags = 0;
     int totalFlags = 0;
 
-    void gameLost();
-    void checkVictory();
-    void resetGame();
+    void GameLost();
+    void GameWon();
 
     void GenerateMap(int n, int rows, int cols);
     void UpdateTiles(int width, int height);

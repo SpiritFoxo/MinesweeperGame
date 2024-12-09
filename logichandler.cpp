@@ -113,7 +113,7 @@ void LogicHandler::RevealCloseTiles(int row, int col)
 void LogicHandler::GameLost(){
      gameTimer->stop();
     // qDebug() << elapsedSeconds;
-     float score = int((correctFlags * (float(1)/float(elapsedSeconds)) * (float(1)/float(elapsedSeconds*elapsedSeconds)) * float(elapsedSeconds) + 1.5) * 4000 - 6000);
+     float score = int((correctFlags * (float(1)/float(elapsedSeconds)) + 1.5) * 4000 - 6000);
      QMessageBox::information(nullptr, "Negative victory", "Congratulations! You blow up!\nYour score is " + QString::number(score));
      isGameActive = false;
      for (int i = 0; i < rows; ++i) {
@@ -128,7 +128,7 @@ void LogicHandler::GameLost(){
 //same as previous but more positive
 void LogicHandler::GameWon(){
     gameTimer->stop();
-    float score = int((correctFlags * (float(1)/float(elapsedSeconds)) * (float(1)/float(elapsedSeconds*elapsedSeconds)) * float(elapsedSeconds) + 1.5) * 4000 - 6000);
+    float score = int((correctFlags * (float(1)/float(elapsedSeconds)) + 1.5) * 4000 - 6000);
     QMessageBox::information(nullptr, "Victory", "Congratulations! You won!\nYour score is " + QString::number(score));
     isGameActive = false;
 }
